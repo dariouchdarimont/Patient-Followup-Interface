@@ -11,6 +11,6 @@ package com.mycompany.patient.followup.project;
 public class PatientFollowupProject {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("slt bg");
     }
 }
