@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Person.findByIdperson", query = "SELECT p FROM Person p WHERE p.idperson = :idperson"),
     @NamedQuery(name = "Person.findByFirstname", query = "SELECT p FROM Person p WHERE p.firstname = :firstname"),
     @NamedQuery(name = "Person.findByLastname", query = "SELECT p FROM Person p WHERE p.lastname = :lastname"),
-    @NamedQuery(name = "Person.findByDateofbirth", query = "SELECT p FROM Person p WHERE p.dateofbirth = :dateofbirth")})
+    @NamedQuery(name = "Person.findByDateofbirth", query = "SELECT p FROM Person p WHERE p.dateofbirth = :dateofbirth"),
+    @NamedQuery(name = "Person.findByEmailadress", query = "Select p FROM person p WHERE p.emailadress = :emailadress"),
+    @NamedQuery(name = "Person.findByPassword", query = "SELECT p FROM Person p WHERE p.password = :password")})
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,6 +53,10 @@ public class Person implements Serializable {
     @Column(name = "dateofbirth")
     @Temporal(TemporalType.DATE)
     private Date dateofbirth;
+    @Column(name = "emailadress")
+    private String emailadress;
+    @Column(name = "password")
+    private Integer password;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idperson")
     private List<Doctor> doctorList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idperson")
@@ -93,6 +99,22 @@ public class Person implements Serializable {
 
     public void setDateofbirth(Date dateofbirth) {
         this.dateofbirth = dateofbirth;
+    }
+    
+    public String getEmailadress() {
+        return emailadress;
+    }
+
+    public void setEmailadress(String emailadress) {
+        this.emailadress = emailadress;
+    }
+    
+    public Integer getPassword() {
+        return password;
+    }
+    
+    public void setPassword(Integer password) {
+        this.password = password;
     }
     
     @XmlTransient
