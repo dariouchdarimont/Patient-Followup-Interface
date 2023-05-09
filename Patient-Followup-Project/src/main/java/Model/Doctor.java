@@ -28,9 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Doctor.findAll", query = "SELECT d FROM Doctor d"),
     @NamedQuery(name = "Doctor.findByIddoctor", query = "SELECT d FROM Doctor d WHERE d.iddoctor = :iddoctor"),
+    @NamedQuery(name = "Doctor.findByIdperson", query = "SELECT d FROM Doctor d WHERE d.idperson = :idperson"),
     @NamedQuery(name = "Doctor.findByInami", query = "SELECT d FROM Doctor d WHERE d.inami = :inami")})
 
-public class Doctor implements Serializable {
+public class Doctor implements Serializable  {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Person.findByFirstname", query = "SELECT p FROM Person p WHERE p.firstname = :firstname"),
     @NamedQuery(name = "Person.findByLastname", query = "SELECT p FROM Person p WHERE p.lastname = :lastname"),
     @NamedQuery(name = "Person.findByDateofbirth", query = "SELECT p FROM Person p WHERE p.dateofbirth = :dateofbirth"),
-    @NamedQuery(name = "Person.findByEmailadress", query = "Select p FROM person p WHERE p.emailadress = :emailadress"),
+    @NamedQuery(name = "Person.findByEmailadress", query = "SELECT p FROM Person p WHERE p.emailadress = :emailadress"),
     @NamedQuery(name = "Person.findByPassword", query = "SELECT p FROM Person p WHERE p.password = :password")})
 public class Person implements Serializable {
 
@@ -46,9 +46,11 @@ public class Person implements Serializable {
     @Basic(optional = false)
     @Column(name = "idperson")
     private Integer idperson;
+    @Column(name = "role")
+    private int role;
     @Column(name = "firstname")
     private String firstname;
-    @Column(name = "familyname")
+    @Column(name = "lastname")
     private String lastname;
     @Column(name = "dateofbirth")
     @Temporal(TemporalType.DATE)
@@ -73,7 +75,7 @@ public class Person implements Serializable {
         return idperson;
     }
     
-    public void setIdperson(Integer idperson) {
+    public void setId(Integer idperson) {
         this.idperson = idperson;
     }
     
@@ -91,6 +93,13 @@ public class Person implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
     
     public Date getDateofbirth() {

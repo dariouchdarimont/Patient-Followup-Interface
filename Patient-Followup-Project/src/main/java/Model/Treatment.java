@@ -26,9 +26,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "treatment")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Treatment.findAll", query = "SELECT t FROM treatment t"),
-    @NamedQuery(name = "treatment.findByIdtreatment", query = "SELECT t FROM Treatment t WHERE t.idtreatment = :idtreatment"),
-    @NamedQuery(name = "treatment.findBySideeffect", query = "SELECT t FROM Treatment t WHERE t.sideeffect = :sideeffect")})
+    @NamedQuery(name = "Treatment.findAll", query = "SELECT t FROM Treatment t"),
+    @NamedQuery(name = "Treatment.findByIdtreatment", query = "SELECT t FROM Treatment t WHERE t.idtreatment = :idtreatment"),
+    @NamedQuery(name = "Treatment.findBySideeffect", query = "SELECT t FROM Treatment t WHERE t.sideeffect = :sideeffect")})
 
 public class Treatment implements Serializable{
     @Id
@@ -41,9 +41,9 @@ public class Treatment implements Serializable{
     private String sideeffect;
     
     private List<Drug> drugList;
-    @OneToMany(mappedBy = "idtreatment")
+    //@OneToMany(mappedBy = "idtreatment")
     
-    private Patient idpatient;
+    //private Patient idpatient;
     
     public Treatment(){
         

@@ -7,6 +7,7 @@ package com.mycompany.patient.followup.project;
  *
  * @author dardar2000
  */
+import View.LogginWindow;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -39,7 +40,8 @@ public class main {
             System.out.println(ex.getMessage());
 
         }
-
+        LogginWindow logginwindow = new LogginWindow();
+        logginwindow.setVisible(true);
     }
 }
         
