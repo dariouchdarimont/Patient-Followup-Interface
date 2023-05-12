@@ -41,7 +41,8 @@ public class ConnectWindow extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         passwordTextField = new javax.swing.JTextField();
         connectButton = new javax.swing.JButton();
-        errorTextField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        errorTextField = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,18 +73,26 @@ public class ConnectWindow extends javax.swing.JFrame {
             }
         });
 
-        errorTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                errorTextFieldActionPerformed(evt);
-            }
-        });
+        errorTextField.setColumns(20);
+        errorTextField.setRows(5);
+        errorTextField.setEnabled(false);
+        jScrollPane1.setViewportView(errorTextField);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(connectButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -95,17 +104,8 @@ public class ConnectWindow extends javax.swing.JFrame {
                             .addComponent(emailAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(135, 135, 135))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(connectButton)
-                        .addGap(159, 159, 159))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(errorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,11 +120,11 @@ public class ConnectWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addComponent(connectButton)
                 .addGap(18, 18, 18)
-                .addComponent(errorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addComponent(connectButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
         );
 
         pack();
@@ -147,6 +147,7 @@ public class ConnectWindow extends javax.swing.JFrame {
         
         person = personCtrl.findByEmailadress(person);
         
+        //IL FAUT VERIFIER LES MDP ICI EN DESSOUS
         if (person!=null && person.getRole()==1){
             //open doctorWindow
             
@@ -155,6 +156,12 @@ public class ConnectWindow extends javax.swing.JFrame {
         else if (person!=null && person.getRole() == 0){
             //open patientWindow
             System.out.println("ceci est un patient");
+            
+            PatientWindow patientwindow = new PatientWindow(person); 
+            patientwindow.setVisible(true);
+            
+            
+            
         }
         else {
             errorTextField.setVisible(true);
@@ -162,10 +169,6 @@ public class ConnectWindow extends javax.swing.JFrame {
         }
            
     }//GEN-LAST:event_connectButtonActionPerformed
-
-    private void errorTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_errorTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,10 +208,11 @@ public class ConnectWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectButton;
     private javax.swing.JTextField emailAdressTextField;
-    private javax.swing.JTextField errorTextField;
+    private javax.swing.JTextArea errorTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField passwordTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -67,6 +67,15 @@ public class Person implements Serializable {
     public Person(){
     }
     
+   // public Patient getPatient() { 
+        //Patient patient = new Patient(); 
+        
+        //this.idperson = idperson;
+        
+        //patient = patientCtrl.findByIdPerson(idperson);
+        //return patient;
+    //}
+    
     public Person(Integer idperson) {
         this.idperson = idperson;
     }
