@@ -6,6 +6,7 @@ package View;
 
 import Controller.PatientJpaController;
 import Controller.PersonJpaController;
+import Model.Person;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,6 +16,7 @@ import javax.persistence.Persistence;
  * @author sarah
  */
 public class DoctorWindow extends javax.swing.JFrame {
+    Person person;
     
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup"); 
     PersonJpaController personCtrl = new PersonJpaController(emfac);
@@ -24,6 +26,10 @@ public class DoctorWindow extends javax.swing.JFrame {
      * Creates new form DoctorWindow
      */
     public DoctorWindow() {
+        initComponents();
+    }
+    
+    public DoctorWindow(Person p) {
         initComponents();
     }
 
