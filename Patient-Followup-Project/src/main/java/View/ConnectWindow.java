@@ -150,7 +150,8 @@ public class ConnectWindow extends javax.swing.JFrame {
         //IL FAUT VERIFIER LES MDP ICI EN DESSOUS
         if (person!=null && person.getRole()==1){
             //open doctorWindow
-            
+            DoctorWindow doctorwindow = new DoctorWindow(person); 
+            doctorwindow.setVisible(true);
             System.out.println("ceci est un docteur");
             }
         else if (person!=null && person.getRole() == 0){

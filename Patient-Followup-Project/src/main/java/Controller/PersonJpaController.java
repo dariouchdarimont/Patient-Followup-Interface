@@ -27,6 +27,11 @@ public class PersonJpaController implements Serializable{
         return emf.createEntityManager();
     }
     
+    public Patient getPatient(Person person){  
+        Patient patient = findPatientByIdPerson(person);
+        return patient;
+    }
+    
     
         public Person findByEmailadress(Person p){
         EntityManager em = getEntityManager();
@@ -52,4 +57,20 @@ public class PersonJpaController implements Serializable{
             return null;
         return res.get(0); //renvoie 1er pers de la liste si duplicata 
         }
+
+    private Person findByIdPerson(Person p) {
+        EntityManager em = getEntityManager();
+        List<Person> res = em.createNamedQuery("Person.findByIdperson").setParameter("idperson", p.getIdperson()).getResultList(); //liste de personne
+        if (res.isEmpty())
+            return null;
+        return res.get(0); //renvoie 1er pers de la liste si duplicata 
+    }
+    
+    private Patient findPatientByIdPerson(Person p) {
+        EntityManager em = getEntityManager();
+        List<Patient> res = em.createNamedQuery("Patient.findByIdPerson").setParameter("idperson", p.getIdperson()).getResultList(); //liste de personne
+        if (res.isEmpty())
+            return null;
+        return res.get(0); //renvoie 1er pers de la liste si duplicata 
+    }
 }
