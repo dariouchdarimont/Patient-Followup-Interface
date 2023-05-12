@@ -67,7 +67,7 @@ public class Person implements Serializable {
     public Person(){
     }
     
-   // public Patient getPatient() { 
+   //public Patient getPatient() { 
         //Patient patient = new Patient(); 
         
         //this.idperson = idperson;
