@@ -6,6 +6,8 @@ package View;
 
 import Controller.PersonJpaController;
 import Controller.TreatmentJpaController;
+import Controller.PatientJpaController;
+import Model.Patient;
 import Model.Person;
 import Model.Treatment;
 import java.util.List;
@@ -21,7 +23,8 @@ public class PatientWindow extends javax.swing.JFrame {
 private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
 PersonJpaController personCtrl = new PersonJpaController(emfac);
 private final TreatmentJpaController treatmentCtrl = new TreatmentJpaController(emfac);
-Person person; 
+private final PatientJpaController patientCtrl = new PatientJpaController(emfac);
+private Person person; 
 
     /**
      * Creates new form PatientWindow
@@ -34,6 +37,7 @@ Person person;
           initComponents();
        patientNameLabel.setVisible(true);
        patientNameLabel.setText(p.getFirstname() + " " + p.getLastname());
+       person = p; //We set the person of the window as the logged person
     }
 
     /**
@@ -126,7 +130,9 @@ Person person;
     }//GEN-LAST:event_refreshTreatmentButtonActionPerformed
     private void refreshTreatmentList(){
         //J-list are based on model --> entitylistmodel allow to have a list of an object we want (here patient)
-        List treatment = treatmentCtrl.findTreatmentEntities();
+        //Patient patient = patientCtrl.findByIdperson(person); //Je prends le patient lié à la personne connectée
+        //System.out.println(patient.toString()); //test
+        List treatment = treatmentCtrl.findTreatmentEntities();; //Je prends la liste de traitement de ce patient 
         EntityListModel<Treatment> model = new EntityListModel(treatment);
         
         treatmentList.setModel(model);

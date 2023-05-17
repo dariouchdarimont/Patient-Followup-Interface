@@ -28,6 +28,15 @@ public class PatientJpaController implements Serializable {
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+    public Patient findByIdperson(Person p) { //je cherche un patient avec une personne (avec son id)
+        EntityManager em = getEntityManager();
+        List<Patient> res = em.createNamedQuery("Patient.findByIdperson").setParameter("idperson", p.getIdperson()).getResultList(); //liste de patient avec cet idperson
+        if (res.isEmpty()) {
+            return null;
+        }
+        return res.get(0); //renvoie 1er pers de la liste si duplicata 
+    }
+    
     
     public void create(Patient patient){
         if(patient.getTreatmentList()==null){
