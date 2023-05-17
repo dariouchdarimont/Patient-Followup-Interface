@@ -40,6 +40,9 @@ public class Treatment implements Serializable{
     @Column(name = "sideeffect")
     private String sideeffect;
     
+    @Column(name = "name")
+    private String name;
+    
     private List<Drug> drugList;
     //@OneToMany(mappedBy = "idtreatment")
     
@@ -99,6 +102,6 @@ public class Treatment implements Serializable{
     
     @Override
     public String toString() {
-        return idtreatment.toString();
+        return name.toString();
     }
 }
