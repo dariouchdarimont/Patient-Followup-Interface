@@ -79,7 +79,7 @@ public class Treatment implements Serializable{
     public void setDrugtList(List<Drug> drugList) {
         this.drugList = drugList;
     }
-    
+ 
     @Override
     public int hashCode() {
         int hash = 0;

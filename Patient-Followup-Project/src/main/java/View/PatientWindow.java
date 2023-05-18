@@ -119,9 +119,12 @@ private Person person;
 
     private void treatmentListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treatmentListMouseClicked
         if (evt.getClickCount()==2){
+            System.out.println("double click");
             EntityListModel<Treatment> model = (EntityListModel) treatmentList.getModel();
             Treatment selected = model.getList().get(treatmentList.getSelectedIndex());
             //ouvrir la treatmentwindow du traitment selected
+            TreatmentWindow treatmentWindow = new TreatmentWindow(selected);
+            treatmentWindow.setVisible(true);
         }
     }//GEN-LAST:event_treatmentListMouseClicked
 
