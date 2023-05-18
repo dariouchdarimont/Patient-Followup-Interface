@@ -120,7 +120,6 @@ public class TreatmentWindow extends javax.swing.JFrame {
                 // Save changes
         try {
             treatmentCtrl.edit(windowTreatment);
-            treatmentCtrl.edit(windowTreatment);
             LOGGER.debug("Edited treatment (id = %d)".formatted(windowTreatment.getIdtreatment()));
         } catch (NonexistentEntityException | IllegalOrphanException ex) {
             LOGGER.error("Couldn't edit patient", ex);
