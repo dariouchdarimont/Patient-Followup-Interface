@@ -4,14 +4,27 @@
  */
 package View;
 
+import Controller.PersonJpaController;
+import Controller.TreatmentJpaController;
+import Controller.PatientJpaController;
+import Model.Patient;
 import Model.Person;
+import Model.Treatment;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import view.EntityListModel;
 
 /**
  *
  * @author dardar2000
  */
 public class PatientWindow extends javax.swing.JFrame {
-Person person; 
+private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
+PersonJpaController personCtrl = new PersonJpaController(emfac);
+private final TreatmentJpaController treatmentCtrl = new TreatmentJpaController(emfac);
+private final PatientJpaController patientCtrl = new PatientJpaController(emfac);
+private Person person; 
 
     /**
      * Creates new form PatientWindow
@@ -22,8 +35,9 @@ Person person;
     
       public PatientWindow(Person p) {
           initComponents();
-       PatientNameLabel.setVisible(true);
-       PatientNameLabel.setText(p.getFirstname() + " " + p.getLastname());
+       patientNameLabel.setVisible(true);
+       patientNameLabel.setText(p.getFirstname() + " " + p.getLastname());
+       person = p; //We set the person of the window as the logged person
     }
 
     /**
@@ -35,23 +49,36 @@ Person person;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PatientNameLabel = new javax.swing.JLabel();
+        patientNameLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        treatmentList = new javax.swing.JList<>();
+        refreshTreatmentButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        PatientNameLabel.setText("Patient Name");
+        patientNameLabel.setText("Patient Name");
 
         jLabel1.setText("Vos traitements :");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        treatmentList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Traitement 1", "Traitement 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        treatmentList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treatmentListMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(treatmentList);
+
+        refreshTreatmentButton.setText("Refresh");
+        refreshTreatmentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshTreatmentButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,25 +94,52 @@ Person person;
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(PatientNameLabel)))
+                        .addGap(22, 22, 22)
+                        .addComponent(refreshTreatmentButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(patientNameLabel)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(PatientNameLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(patientNameLabel)
+                    .addComponent(refreshTreatmentButton))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void treatmentListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treatmentListMouseClicked
+        if (evt.getClickCount()==2){
+            System.out.println("double click");
+            EntityListModel<Treatment> model = (EntityListModel) treatmentList.getModel();
+            Treatment selected = model.getList().get(treatmentList.getSelectedIndex());
+            //ouvrir la treatmentwindow du traitment selected
+            TreatmentWindow treatmentWindow = new TreatmentWindow(selected);
+            treatmentWindow.setVisible(true);
+        }
+    }//GEN-LAST:event_treatmentListMouseClicked
+
+    private void refreshTreatmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshTreatmentButtonActionPerformed
+        refreshTreatmentList();
+    }//GEN-LAST:event_refreshTreatmentButtonActionPerformed
+    private void refreshTreatmentList(){
+        //J-list are based on model --> entitylistmodel allow to have a list of an object we want (here patient)
+        //Patient patient = patientCtrl.findByIdperson(person); //Je prends le patient lié à la personne connectée
+        //System.out.println(patient.toString()); //test
+        List treatment = treatmentCtrl.findTreatmentEntities();; //Je prends la liste de traitement de ce patient 
+        EntityListModel<Treatment> model = new EntityListModel(treatment);
+        
+        treatmentList.setModel(model);
+    }
     /**
      * @param args the command line arguments
      */
@@ -122,9 +176,10 @@ Person person;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel PatientNameLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel patientNameLabel;
+    private javax.swing.JButton refreshTreatmentButton;
+    private javax.swing.JList<String> treatmentList;
     // End of variables declaration//GEN-END:variables
 }

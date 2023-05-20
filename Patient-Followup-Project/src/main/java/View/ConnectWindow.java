@@ -160,6 +160,7 @@ public class ConnectWindow extends javax.swing.JFrame {
             
             PatientWindow patientwindow = new PatientWindow(person); 
             patientwindow.setVisible(true);
+            this.dispose(); //PQ ca marche pas? je veux faire disparaitre la connectwindow sans la fermer
             
             
             
