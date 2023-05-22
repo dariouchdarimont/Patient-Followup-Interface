@@ -89,7 +89,8 @@ public class LogginWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_connectionButtonActionPerformed
 
     private void registerButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButton1ActionPerformed
-        // TODO add your handling code here:
+        RegisterWindow register = new RegisterWindow();
+        register.setVisible(true);
     }//GEN-LAST:event_registerButton1ActionPerformed
 
     /**

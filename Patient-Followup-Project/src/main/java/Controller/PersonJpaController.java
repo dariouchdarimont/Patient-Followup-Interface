@@ -73,4 +73,18 @@ public class PersonJpaController implements Serializable{
             return null;
         return res.get(0); //renvoie 1er pers de la liste si duplicata 
     }
+    
+    public void create (Person p){
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(p);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 }
