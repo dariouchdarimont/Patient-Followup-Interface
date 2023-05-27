@@ -14,9 +14,9 @@ import ca.uhn.hl7v2.app.HL7Service;
 import ca.uhn.hl7v2.app.Initiator;
 import ca.uhn.hl7v2.llp.LLPException;
 import ca.uhn.hl7v2.model.Message;
-import ca.uhn.hl7v2.model.v23.message.ADT_A01;
-import ca.uhn.hl7v2.model.v23.segment.MSH;
-import ca.uhn.hl7v2.model.v23.segment.PID;
+import ca.uhn.hl7v2.model.v24.message.ADT_A01;
+import ca.uhn.hl7v2.model.v24.segment.MSH;
+import ca.uhn.hl7v2.model.v24.segment.PID;
 import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.protocol.ReceivingApplication;
 
@@ -48,7 +48,6 @@ public class HL7Services {
            
            // Populate the PID Segment
            PID pid = adt.getPID();
-           pid.getPatientName(0).getFamilyName().setValue(person.getFirstname());
            pid.getPatientName(0).getGivenName().setValue(person.getLastname());
        } catch (HL7Exception | IOException ex) { //exceptions liées à hl7
            Logger.getLogger(HL7Services.class.getName()).log(Level.SEVERE, null, ex);
