@@ -40,12 +40,9 @@ public class Drug implements Serializable {
     private Integer iddrug;
     @Column(name="name")
     private String name;
-    @Column(name="posoly")
+    @Column(name="posology")
     private String posology;
     
-    @JoinColumn(name = "idtreatment", referencedColumnName = "idtreatment")
-    @ManyToOne(optional = false)
-    private Treatment idtreatment;
     
     public Drug(){
         
@@ -79,15 +76,6 @@ public class Drug implements Serializable {
         this.posology = posology;
     }
     
-    public Treatment getIdTreatment(){
-        return idtreatment;
-    }
-    
-    public void SetIdTreatment(Treatment idtreatment){
-        this.idtreatment = idtreatment;
-    }
-    //pas sure
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -110,6 +98,6 @@ public class Drug implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.drug[ drug=" + iddrug + " ]";
+        return this.getName();
     }
 }

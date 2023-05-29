@@ -40,9 +40,11 @@
                       <Component id="refreshTreatmentButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="patientNameLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="addTreatmentButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -53,6 +55,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="patientNameLabel" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshTreatmentButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="addTreatmentButton" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -105,6 +108,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshTreatmentButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="addTreatmentButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add treatment"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addTreatmentButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
