@@ -8,6 +8,7 @@ import Model.Doctor;
 import Model.Patient;
 import Model.Person;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +27,8 @@ public class PersonJpaController implements Serializable{
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+    
+    
     
     public Patient getPatient(Person person){  
         Patient patient = findPatientByIdPerson(person);

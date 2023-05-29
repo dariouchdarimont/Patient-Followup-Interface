@@ -9,6 +9,7 @@ import Model.Patient;
 import Model.Person;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import services.HL7Services;
 
 /**
  *
@@ -43,6 +44,7 @@ public class ConnectWindow extends javax.swing.JFrame {
         connectButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         errorTextField = new javax.swing.JTextArea();
+        startHL7Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,18 +80,20 @@ public class ConnectWindow extends javax.swing.JFrame {
         errorTextField.setEnabled(false);
         jScrollPane1.setViewportView(errorTextField);
 
+        startHL7Button.setText("Start HL7");
+        startHL7Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startHL7ButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(connectButton)))
+                .addGap(149, 149, 149)
+                .addComponent(connectButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(59, Short.MAX_VALUE)
@@ -106,13 +110,21 @@ public class ConnectWindow extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(144, 144, 144)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(startHL7Button)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addGap(58, 58, 58)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(startHL7Button))
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -172,6 +184,14 @@ public class ConnectWindow extends javax.swing.JFrame {
            
     }//GEN-LAST:event_connectButtonActionPerformed
 
+    private void startHL7ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startHL7ButtonActionPerformed
+                //bouton pr start le serveur hl7
+        HL7Services hl7 = new HL7Services();
+        hl7.startServeur(); 
+        System.out.println("HL7 start");
+        
+    }//GEN-LAST:event_startHL7ButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -216,5 +236,6 @@ public class ConnectWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField passwordTextField;
+    private javax.swing.JButton startHL7Button;
     // End of variables declaration//GEN-END:variables
 }
