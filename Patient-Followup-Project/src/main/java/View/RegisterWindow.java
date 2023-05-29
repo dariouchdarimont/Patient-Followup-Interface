@@ -4,9 +4,12 @@
  */
 package View;
 
+import Controller.DoctorJpaController;
+import Controller.PatientJpaController;
 import Model.Person;
 import Controller.PersonJpaController;
 import Model.Doctor;
+import Model.Patient;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,15 +27,17 @@ public class RegisterWindow extends javax.swing.JFrame {
      */
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
     PersonJpaController personCtrl = new PersonJpaController(emfac);
-    
-    private int id;
+    PatientJpaController patientCtrl = new PatientJpaController(emfac);
+    DoctorJpaController doctorCtrl = new DoctorJpaController(emfac);
+
+    //private int id;
     private int role = 0;
     private int pw = 0;
     private int inami = 0;
     private Date date = null;
 
     private boolean databoolean = false;
-    
+
     private final String format = "yyyy-MM-dd";
     private final SimpleDateFormat sdf = new SimpleDateFormat(format);
 
@@ -269,12 +274,14 @@ public class RegisterWindow extends javax.swing.JFrame {
     }
 
     private void checkInami() {
-        String i = String.valueOf(inamiTextField.getText());
-        try {
-            inami = Integer.parseInt(i);
-        } catch (NumberFormatException ex) {
-            inami = 0;
-            error += ("Invalid inami format. ");
+        if (role == 1) {
+            String i = String.valueOf(inamiTextField.getText());
+            try {
+                inami = Integer.parseInt(i);
+            } catch (NumberFormatException ex) {
+                inami = 0;
+                error += ("Invalid INAMI format. ");
+            }
         }
     }
 
@@ -282,24 +289,34 @@ public class RegisterWindow extends javax.swing.JFrame {
         dataIsComplete();
         checkPassword();
         checkDate();
+        checkInami();
         errorText.setText(error);
         error = "";
         if (databoolean && pw != 0 && date != null) {
-            Person person = new Person(id);
+            Person person = new Person();
             person.setLastname(lastNameTextField.getText());
             person.setFirstname(firstNameTextField.getText());
             person.setDateofbirth(date);
             person.setPassword(pw);
             person.setEmailadress(emailTextField.getText());
             person.setRole(role);
-            if (role == 1) {
-                //checkInami();
-                //(Doctor) person.setInami(inamiTextField.getText());
-            }
             personCtrl.create(person);
-        }        
+            if (role == 0) {
+                Patient patient = new Patient();
+                patient.setIdperson(person);
+                patientCtrl.create(patient);
+            } else if (role == 1) {
+                if (inami != 0) {
+                    Doctor doctor = new Doctor();
+                    doctor.setIdperson(person);
+                    doctor.setInami(inami);
+                    doctorCtrl.create(doctor);
+                }
+            }
+            //personCtrl.create(person);
+        }
     }//GEN-LAST:event_registerButtonActionPerformed
- 
+
     private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
         if ((roleComboBox.getSelectedItem().toString()).equalsIgnoreCase("Patient")) {
             inamiLabel.setVisible(false);
