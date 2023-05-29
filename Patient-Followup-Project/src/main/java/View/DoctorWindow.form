@@ -27,11 +27,12 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="selectPatientButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="welcomeDoctorLabel" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="selectPatientLabel" min="-2" pref="101" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="refreshPatientButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="patientListLabel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -41,9 +42,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="patientListLabel" min="-2" pref="52" max="-2" attributes="0"/>
+              <Component id="welcomeDoctorLabel" min="-2" pref="52" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="selectPatientButton" min="-2" pref="29" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="refreshPatientButton" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                  <Component id="selectPatientLabel" alignment="3" max="32767" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="195" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -52,16 +56,19 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="patientListLabel">
+    <Component class="javax.swing.JLabel" name="welcomeDoctorLabel">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Welcome Doctor !"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="selectPatientButton">
+    <Component class="javax.swing.JButton" name="refreshPatientButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Select a patient"/>
+        <Property name="text" type="java.lang.String" value="Refresh"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshPatientButtonActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -76,11 +83,19 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listPatientMouseClicked"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="selectPatientLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Select a patient :"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

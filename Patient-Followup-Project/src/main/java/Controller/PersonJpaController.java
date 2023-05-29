@@ -73,4 +73,8 @@ public class PersonJpaController implements Serializable{
             return null;
         return res.get(0); //renvoie 1er pers de la liste si duplicata 
     }
+
+    public List findPersonEntities() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

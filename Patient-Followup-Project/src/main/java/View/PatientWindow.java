@@ -20,6 +20,7 @@ import view.EntityListModel;
  * @author dardar2000
  */
 public class PatientWindow extends javax.swing.JFrame {
+    
 private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
 PersonJpaController personCtrl = new PersonJpaController(emfac);
 private final TreatmentJpaController treatmentCtrl = new TreatmentJpaController(emfac);
@@ -135,7 +136,7 @@ private Person person;
         //J-list are based on model --> entitylistmodel allow to have a list of an object we want (here patient)
         //Patient patient = patientCtrl.findByIdperson(person); //Je prends le patient lié à la personne connectée
         //System.out.println(patient.toString()); //test
-        List treatment = treatmentCtrl.findTreatmentEntities();; //Je prends la liste de traitement de ce patient 
+        List treatment = treatmentCtrl.findTreatmentEntities(); //Je prends la liste de traitement de ce patient 
         EntityListModel<Treatment> model = new EntityListModel(treatment);
         
         treatmentList.setModel(model);

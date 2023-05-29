@@ -156,6 +156,7 @@ public class ConnectWindow extends javax.swing.JFrame {
             }
         else if (person!=null && person.getRole() == 0){
             //open patientWindow
+            Patient p = new Patient();
             System.out.println("ceci est un patient");
             
             PatientWindow patientwindow = new PatientWindow(person); 

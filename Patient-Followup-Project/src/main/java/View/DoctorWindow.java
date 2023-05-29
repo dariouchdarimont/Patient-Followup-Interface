@@ -4,22 +4,27 @@
  */
 package View;
 
+import Controller.DoctorJpaController;
 import Controller.PatientJpaController;
 import Controller.PersonJpaController;
+import Model.Patient;
 import Model.Person;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import view.EntityListModel;
 
 /**
  *
  * @author sarah
  */
 public class DoctorWindow extends javax.swing.JFrame {
-    Person person;
+    private Person person;
     
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup"); 
     PersonJpaController personCtrl = new PersonJpaController(emfac);
+    private final PatientJpaController patientCtrl = new PatientJpaController(emfac);
+    private final DoctorJpaController doctorCtrl = new DoctorJpaController(emfac);
     //PatientJpaController patientCtrl = new PatientJpaController(emfac);
 
     /**
@@ -31,6 +36,9 @@ public class DoctorWindow extends javax.swing.JFrame {
     
     public DoctorWindow(Person p) {
         initComponents();
+        welcomeDoctorLabel.setVisible(true);
+        welcomeDoctorLabel.setText("Welcome doctor " + p.getLastname());
+        person = p;
     }
 
     /**
@@ -42,19 +50,32 @@ public class DoctorWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        patientListLabel = new javax.swing.JLabel();
-        selectPatientButton = new javax.swing.JButton();
+        welcomeDoctorLabel = new javax.swing.JLabel();
+        refreshPatientButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         listPatient = new javax.swing.JList<>();
+        selectPatientLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        patientListLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        patientListLabel.setText("Welcome Doctor !");
+        welcomeDoctorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        welcomeDoctorLabel.setText("Welcome Doctor !");
 
-        selectPatientButton.setText("Select a patient");
+        refreshPatientButton.setText("Refresh");
+        refreshPatientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshPatientButtonActionPerformed(evt);
+            }
+        });
 
+        listPatient.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listPatientMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listPatient);
+
+        selectPatientLabel.setText("Select a patient :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,19 +85,22 @@ public class DoctorWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectPatientButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(patientListLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(welcomeDoctorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(selectPatientLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshPatientButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(patientListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(welcomeDoctorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(refreshPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectPatientLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addContainerGap())
@@ -85,48 +109,33 @@ public class DoctorWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectPatientActionPerformed(java.awt.event.ActionEvent evt){
-        // to do
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DoctorWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DoctorWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DoctorWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DoctorWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void listPatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listPatientMouseClicked
+        if (evt.getClickCount() == 2){
+            System.out.println("double click");
+            EntityListModel<Patient> model = (EntityListModel) listPatient.getModel();
+            Patient selected = model.getList().get(listPatient.getSelectedIndex());
+            // changer le type de selected en person au lieu de patient
+            //PatientWindow patientWindow = new PatientWindow(selected);
+            //patientWindow.setVisible(true);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_listPatientMouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new DoctorWindow().setVisible(true);
-            }
-        });
+    private void refreshPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshPatientButtonActionPerformed
+        refreshPatientList();    }//GEN-LAST:event_refreshPatientButtonActionPerformed
+
+    private void refreshPatientList() {
+        List patient = patientCtrl.findPatientEntities();
+        EntityListModel<Patient> model = new EntityListModel(patient);
+        
+        listPatient.setModel(model);
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listPatient;
-    private javax.swing.JLabel patientListLabel;
-    private javax.swing.JButton selectPatientButton;
+    private javax.swing.JButton refreshPatientButton;
+    private javax.swing.JLabel selectPatientLabel;
+    private javax.swing.JLabel welcomeDoctorLabel;
     // End of variables declaration//GEN-END:variables
+
 }
