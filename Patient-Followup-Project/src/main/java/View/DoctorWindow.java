@@ -112,11 +112,12 @@ public class DoctorWindow extends javax.swing.JFrame {
     private void listPatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listPatientMouseClicked
         if (evt.getClickCount() == 2){
             System.out.println("double click");
-            EntityListModel<Patient> model = (EntityListModel) listPatient.getModel();
-            Patient selected = model.getList().get(listPatient.getSelectedIndex());
+            EntityListModel<Person> model = (EntityListModel) listPatient.getModel();
+            Person selected = model.getList().get(listPatient.getSelectedIndex());
             // changer le type de selected en person au lieu de patient
-            //PatientWindow patientWindow = new PatientWindow(selected);
-            //patientWindow.setVisible(true);
+            PatientWindow patientWindow = new PatientWindow(selected);
+            patientWindow.setVisible(true);
+            //ouvrir la treatmentwindow du traitment selected
         }
     }//GEN-LAST:event_listPatientMouseClicked
 
@@ -124,6 +125,7 @@ public class DoctorWindow extends javax.swing.JFrame {
         refreshPatientList();    }//GEN-LAST:event_refreshPatientButtonActionPerformed
 
     private void refreshPatientList() {
+        
         List patient = patientCtrl.findPatientEntities();
         EntityListModel<Patient> model = new EntityListModel(patient);
         
