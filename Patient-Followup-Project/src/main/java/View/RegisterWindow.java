@@ -305,15 +305,16 @@ public class RegisterWindow extends javax.swing.JFrame {
                 Patient patient = new Patient();
                 patient.setIdperson(person);
                 patientCtrl.create(patient);
+                this.dispose();
             } else if (role == 1) {
                 if (inami != 0) {
                     Doctor doctor = new Doctor();
                     doctor.setIdperson(person);
                     doctor.setInami(inami);
                     doctorCtrl.create(doctor);
+                    this.dispose();
                 }
             }
-            //personCtrl.create(person);
         }
     }//GEN-LAST:event_registerButtonActionPerformed
 
