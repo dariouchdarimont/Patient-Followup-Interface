@@ -40,6 +40,9 @@ public class Treatment implements Serializable{
     @Column(name = "sideeffect")
     private String sideeffect;
     
+    @Column(name = "iddrug")
+    private int iddrug;
+    
     @Column(name = "name")
     private String name;
     
@@ -70,6 +73,13 @@ public class Treatment implements Serializable{
     
     public void setSideeffect(String sideeffect) {
         this.sideeffect = sideeffect;
+    }
+    public void setIddrug(Integer iddrug) {
+        this.iddrug = iddrug;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
     public List<Drug> getDrugList(){

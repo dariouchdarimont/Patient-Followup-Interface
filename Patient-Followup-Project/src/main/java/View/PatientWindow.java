@@ -54,6 +54,7 @@ private Person person;
         jScrollPane1 = new javax.swing.JScrollPane();
         treatmentList = new javax.swing.JList<>();
         refreshTreatmentButton = new javax.swing.JButton();
+        addTreatmentButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -80,6 +81,13 @@ private Person person;
             }
         });
 
+        addTreatmentButton.setText("Add treatment");
+        addTreatmentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTreatmentButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,8 +105,10 @@ private Person person;
                         .addGap(22, 22, 22)
                         .addComponent(refreshTreatmentButton)
                         .addGap(18, 18, 18)
-                        .addComponent(patientNameLabel)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addComponent(patientNameLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(addTreatmentButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,7 +116,8 @@ private Person person;
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(patientNameLabel)
-                    .addComponent(refreshTreatmentButton))
+                    .addComponent(refreshTreatmentButton)
+                    .addComponent(addTreatmentButton))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -131,11 +142,17 @@ private Person person;
     private void refreshTreatmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshTreatmentButtonActionPerformed
         refreshTreatmentList();
     }//GEN-LAST:event_refreshTreatmentButtonActionPerformed
+
+    private void addTreatmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTreatmentButtonActionPerformed
+        System.out.println("test");
+        AddTreatmentWindow addTreatmentWindow = new AddTreatmentWindow(person);
+        addTreatmentWindow.setVisible(true);
+    }//GEN-LAST:event_addTreatmentButtonActionPerformed
     private void refreshTreatmentList(){
         //J-list are based on model --> entitylistmodel allow to have a list of an object we want (here patient)
         //Patient patient = patientCtrl.findByIdperson(person); //Je prends le patient lié à la personne connectée
         //System.out.println(patient.toString()); //test
-        List treatment = treatmentCtrl.findTreatmentEntities();; //Je prends la liste de traitement de ce patient 
+        List treatment = treatmentCtrl.findTreatmentEntities(); //Je prends la liste de traitement de ce patient 
         EntityListModel<Treatment> model = new EntityListModel(treatment);
         
         treatmentList.setModel(model);
@@ -143,6 +160,7 @@ private Person person;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addTreatmentButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel patientNameLabel;
