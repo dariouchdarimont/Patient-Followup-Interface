@@ -226,7 +226,7 @@ public class RegisterWindow extends javax.swing.JFrame {
             if (pw1.length() > 3) {
                 try {
                     pw = Integer.parseInt(pw1);
-                } catch (NumberFormatException ex) {
+                } catch (IllegalArgumentException ex) {
                     pw = 0;
                     error += ("Only use numbers in password. ");
                 }

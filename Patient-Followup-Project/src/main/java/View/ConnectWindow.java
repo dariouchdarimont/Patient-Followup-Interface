@@ -16,9 +16,10 @@ import services.HL7Services;
  * @author dardar2000
  */
 public class ConnectWindow extends javax.swing.JFrame {
-    
+
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
     PersonJpaController personCtrl = new PersonJpaController(emfac);
+
     /**
      * Creates new form ConnectWindow
      */
@@ -40,11 +41,11 @@ public class ConnectWindow extends javax.swing.JFrame {
         emailAdressTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        passwordTextField = new javax.swing.JTextField();
         connectButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         errorTextField = new javax.swing.JTextArea();
         startHL7Button = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -56,15 +57,9 @@ public class ConnectWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("e-mail adress");
+        jLabel2.setText("E-mail address");
 
-        jLabel3.setText("password :");
-
-        passwordTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTextFieldActionPerformed(evt);
-            }
-        });
+        jLabel3.setText("Password");
 
         connectButton.setText("Connect");
         connectButton.addActionListener(new java.awt.event.ActionListener() {
@@ -100,10 +95,10 @@ public class ConnectWindow extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(emailAdressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
-                            .addComponent(passwordTextField))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emailAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(135, 135, 135))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,7 +124,7 @@ public class ConnectWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(connectButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
@@ -143,54 +138,56 @@ public class ConnectWindow extends javax.swing.JFrame {
     private void emailAdressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailAdressTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_emailAdressTextFieldActionPerformed
-
-    private void passwordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTextFieldActionPerformed
-
+    private boolean passwordIsCorrect(Person p) {
+        int enteredpw, correctpw;
+        try {
+            enteredpw = Integer.parseInt(String.valueOf(passwordField.getPassword()));
+            correctpw = p.getPassword();
+            return enteredpw == correctpw;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         Person person = new Person();
-        
-        person.setPassword(Integer.valueOf(passwordTextField.getText()));
-        
+
         person.setEmailadress(emailAdressTextField.getText());
-        
+
         person = personCtrl.findByEmailadress(person);
-        
-        //IL FAUT VERIFIER LES MDP ICI EN DESSOUS
-        if (person!=null && person.getRole()==1){
-            //open doctorWindow
-            DoctorWindow doctorwindow = new DoctorWindow(person); 
-            doctorwindow.setVisible(true);
-            System.out.println("ceci est un docteur");
+
+        if (person != null && person.getRole() == 1) {
+            if (passwordIsCorrect(person)) {
+                //open doctorWindow
+                DoctorWindow doctorwindow = new DoctorWindow(person);
+                doctorwindow.setVisible(true);
+                System.out.println("ceci est un docteur");
+            } else {
+                errorTextField.setVisible(true);
+                errorTextField.setText("Incorrect password. Try again.");
             }
-        else if (person!=null && person.getRole() == 0){
+        } else if (person != null && person.getRole() == 0) {
             //open patientWindow
             System.out.println("ceci est un patient");
-            
-            PatientWindow patientwindow = new PatientWindow(person); 
+
+            PatientWindow patientwindow = new PatientWindow(person);
             patientwindow.setVisible(true);
-            this.dispose(); //PQ ca marche pas? je veux faire disparaitre la connectwindow sans la fermer
-            
-            
-            
-        }
-        else {
+            this.dispose();
+
+        } else {
             errorTextField.setVisible(true);
             errorTextField.setText("You are not in the database, please register !");
         }
-           
+
     }//GEN-LAST:event_connectButtonActionPerformed
 
     private void startHL7ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startHL7ButtonActionPerformed
-                //bouton pr start le serveur hl7
+        //bouton pr start le serveur hl7
         HL7Services hl7 = new HL7Services();
-        hl7.startServeur(); 
+        hl7.startServeur();
         System.out.println("HL7 start");
-        
+
     }//GEN-LAST:event_startHL7ButtonActionPerformed
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectButton;
@@ -200,7 +197,7 @@ public class ConnectWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JButton startHL7Button;
     // End of variables declaration//GEN-END:variables
 }
