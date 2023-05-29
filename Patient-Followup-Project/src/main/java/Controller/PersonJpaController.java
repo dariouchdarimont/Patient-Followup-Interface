@@ -8,6 +8,7 @@ import Model.Doctor;
 import Model.Patient;
 import Model.Person;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +27,8 @@ public class PersonJpaController implements Serializable{
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+    
+    
     
     public Patient getPatient(Person person){  
         Patient patient = findPatientByIdPerson(person);
@@ -73,8 +76,18 @@ public class PersonJpaController implements Serializable{
             return null;
         return res.get(0); //renvoie 1er pers de la liste si duplicata 
     }
-
-    public List findPersonEntities() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+    public void create (Person p){
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(p);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 }

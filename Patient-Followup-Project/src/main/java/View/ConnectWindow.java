@@ -9,15 +9,17 @@ import Model.Patient;
 import Model.Person;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import services.HL7Services;
 
 /**
  *
  * @author dardar2000
  */
 public class ConnectWindow extends javax.swing.JFrame {
-    
+
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
     PersonJpaController personCtrl = new PersonJpaController(emfac);
+
     /**
      * Creates new form ConnectWindow
      */
@@ -39,32 +41,25 @@ public class ConnectWindow extends javax.swing.JFrame {
         emailAdressTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        passwordTextField = new javax.swing.JTextField();
         connectButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         errorTextField = new javax.swing.JTextArea();
+        startHL7Button = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Connection window");
 
-        emailAdressTextField.setText("e-mail");
         emailAdressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailAdressTextFieldActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("e-mail adress");
+        jLabel2.setText("E-mail address");
 
-        jLabel3.setText("password :");
-
-        passwordTextField.setText("password");
-        passwordTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTextFieldActionPerformed(evt);
-            }
-        });
+        jLabel3.setText("Password");
 
         connectButton.setText("Connect");
         connectButton.addActionListener(new java.awt.event.ActionListener() {
@@ -78,18 +73,20 @@ public class ConnectWindow extends javax.swing.JFrame {
         errorTextField.setEnabled(false);
         jScrollPane1.setViewportView(errorTextField);
 
+        startHL7Button.setText("Start HL7");
+        startHL7Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startHL7ButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(connectButton)))
+                .addGap(149, 149, 149)
+                .addComponent(connectButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(59, Short.MAX_VALUE)
@@ -98,28 +95,36 @@ public class ConnectWindow extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
-                        .addGap(26, 26, 26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(emailAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(emailAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(135, 135, 135))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(144, 144, 144)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(startHL7Button)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addGap(58, 58, 58)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(startHL7Button))
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailAdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(connectButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
@@ -133,80 +138,57 @@ public class ConnectWindow extends javax.swing.JFrame {
     private void emailAdressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailAdressTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_emailAdressTextFieldActionPerformed
-
-    private void passwordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTextFieldActionPerformed
-
+    private boolean passwordIsCorrect(Person p) {
+        int enteredpw, correctpw;
+        try {
+            enteredpw = Integer.parseInt(String.valueOf(passwordField.getPassword()));
+            correctpw = p.getPassword();
+            return enteredpw == correctpw;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         Person person = new Person();
-        
-        person.setPassword(Integer.valueOf(passwordTextField.getText()));
-        
+
         person.setEmailadress(emailAdressTextField.getText());
-        
+
         person = personCtrl.findByEmailadress(person);
-        
-        //IL FAUT VERIFIER LES MDP ICI EN DESSOUS
-        if (person!=null && person.getRole()==1){
-            //open doctorWindow
-            DoctorWindow doctorwindow = new DoctorWindow(person); 
-            doctorwindow.setVisible(true);
-            System.out.println("ceci est un docteur");
+
+        if (person != null && person.getRole() == 1) {
+            if (passwordIsCorrect(person)) {
+                //open doctorWindow
+                DoctorWindow doctorwindow = new DoctorWindow(person);
+                doctorwindow.setVisible(true);
+                System.out.println("ceci est un docteur");
+            } else {
+                errorTextField.setVisible(true);
+                errorTextField.setText("Incorrect password. Try again.");
             }
-        else if (person!=null && person.getRole() == 0){
+        } else if (person != null && person.getRole() == 0) {
             //open patientWindow
             Patient p = new Patient();
             System.out.println("ceci est un patient");
-            
-            PatientWindow patientwindow = new PatientWindow(person); 
+
+            PatientWindow patientwindow = new PatientWindow(person);
             patientwindow.setVisible(true);
-            this.dispose(); //PQ ca marche pas? je veux faire disparaitre la connectwindow sans la fermer
-            
-            
-            
-        }
-        else {
+            this.dispose();
+
+        } else {
             errorTextField.setVisible(true);
             errorTextField.setText("You are not in the database, please register !");
         }
-           
+
     }//GEN-LAST:event_connectButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConnectWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConnectWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConnectWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConnectWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void startHL7ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startHL7ButtonActionPerformed
+        //bouton pr start le serveur hl7
+        HL7Services hl7 = new HL7Services();
+        hl7.startServeur();
+        System.out.println("HL7 start");
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ConnectWindow().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_startHL7ButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectButton;
@@ -216,6 +198,7 @@ public class ConnectWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JButton startHL7Button;
     // End of variables declaration//GEN-END:variables
 }

@@ -41,7 +41,7 @@ public class Patient implements Serializable{
     @Basic(optional = false)
     @Column(name = "Idpatient")
     private Integer idpatient;
-    @JoinColumn(name = "Idperson", referencedColumnName = "Idpatient")
+    @JoinColumn(name = "idperson", referencedColumnName = "idperson")
     @ManyToOne(optional = false)
     
     private Person idperson;
