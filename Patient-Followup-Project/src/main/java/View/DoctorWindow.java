@@ -7,6 +7,7 @@ package View;
 import Controller.DoctorJpaController;
 import Controller.PatientJpaController;
 import Controller.PersonJpaController;
+import Controller.PersonJpaController1;
 import Model.Patient;
 import Model.Person;
 import java.util.List;
@@ -23,8 +24,11 @@ public class DoctorWindow extends javax.swing.JFrame {
     
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup"); 
     PersonJpaController personCtrl = new PersonJpaController(emfac);
+    PersonJpaController1 personCtrl1 = new PersonJpaController1(emfac);
+
     private final PatientJpaController patientCtrl = new PatientJpaController(emfac);
     private final DoctorJpaController doctorCtrl = new DoctorJpaController(emfac);
+
     //PatientJpaController patientCtrl = new PatientJpaController(emfac);
 
     /**
@@ -130,6 +134,10 @@ public class DoctorWindow extends javax.swing.JFrame {
         EntityListModel<Patient> model = new EntityListModel(patient);
         
         listPatient.setModel(model);
+        
+        System.out.println("refresh patient");
+        
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

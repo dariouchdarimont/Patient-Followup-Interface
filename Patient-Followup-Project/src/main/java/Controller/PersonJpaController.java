@@ -90,4 +90,8 @@ public class PersonJpaController implements Serializable{
             }
         }
     }
+
+    public List findPersonEntities() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
