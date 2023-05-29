@@ -10,8 +10,6 @@ import Model.Doctor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -24,14 +22,28 @@ public class RegisterWindow extends javax.swing.JFrame {
     /**
      * Creates new form RegisterWindow
      */
-    
     private final EntityManagerFactory emfac = Persistence.createEntityManagerFactory("patientfollowup");
     PersonJpaController personCtrl = new PersonJpaController(emfac);
-    private final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-    private int role = 0;
     
+    private int id;
+    private int role = 0;
+    private int pw = 0;
+    private int inami = 0;
+    private Date date = null;
+
+    private boolean databoolean = false;
+    
+    private final String format = "yyyy-MM-dd";
+    private final SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+    private String error = "";
+
     public RegisterWindow() {
         initComponents();
+        errorText.setText(error);
+        errorText.setVisible(true);
+        inamiTextField.setVisible(false);
+        inamiLabel.setVisible(false);
     }
 
     /**
@@ -58,12 +70,14 @@ public class RegisterWindow extends javax.swing.JFrame {
         emailTextField = new javax.swing.JTextField();
         registerButton = new javax.swing.JButton();
         errorText = new javax.swing.JTextField();
-        isDoctorCheckBox = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
+        inamiLabel = new javax.swing.JLabel();
         inamiTextField = new javax.swing.JTextField();
+        roleComboBox = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         titleLabel.setText("Register here");
 
         nameLabel.setText("Last Name");
@@ -78,21 +92,9 @@ public class RegisterWindow extends javax.swing.JFrame {
 
         confirmPasswordLabel.setText("Confirm password");
 
-        lastNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastNameTextFieldActionPerformed(evt);
-            }
-        });
+        dateOfBirthTextField.setText("yyyy-mm-dd");
 
-        passwordField.setText("***********");
-
-        passwordField2.setText("**********");
-        passwordField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordField2ActionPerformed(evt);
-            }
-        });
-
+        registerButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         registerButton.setText("Register");
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,26 +103,20 @@ public class RegisterWindow extends javax.swing.JFrame {
         });
 
         errorText.setEditable(false);
-        errorText.addActionListener(new java.awt.event.ActionListener() {
+
+        inamiLabel.setText("INAMI");
+        inamiLabel.setEnabled(false);
+
+        inamiTextField.setEnabled(false);
+
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Patient", "Doctor" }));
+        roleComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                errorTextActionPerformed(evt);
+                roleComboBoxActionPerformed(evt);
             }
         });
 
-        isDoctorCheckBox.setText("Are you a doctor ?");
-        isDoctorCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                isDoctorCheckBoxActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("INAMI");
-
-        inamiTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inamiTextFieldActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("Select your role :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,78 +125,87 @@ public class RegisterWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(titleLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
+                        .addGap(227, 227, 227)
                         .addComponent(registerButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(93, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(firstNameLabel)
-                    .addComponent(nameLabel)
-                    .addComponent(dateOfBirthLabel)
-                    .addComponent(emailLabel)
-                    .addComponent(passwordLabel)
-                    .addComponent(confirmPasswordLabel))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(firstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateOfBirthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(inamiTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(isDoctorCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGap(225, 225, 225)
+                        .addComponent(titleLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errorText)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(firstNameLabel)
+                                    .addComponent(nameLabel)
+                                    .addComponent(dateOfBirthLabel)
+                                    .addComponent(emailLabel)
+                                    .addComponent(passwordLabel)
+                                    .addComponent(confirmPasswordLabel))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(dateOfBirthTextField)
+                                        .addComponent(firstNameTextField)
+                                        .addComponent(lastNameTextField)
+                                        .addComponent(passwordField)
+                                        .addComponent(passwordField2))
+                                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(136, 136, 136)
+                                        .addComponent(inamiLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(inamiTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(82, 82, 82)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addContainerGap()
                 .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameLabel)
-                    .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(isDoctorCheckBox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(firstNameLabel)
-                    .addComponent(firstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(inamiTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateOfBirthLabel)
-                    .addComponent(dateOfBirthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailLabel)
-                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordLabel)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(confirmPasswordLabel)
-                    .addComponent(passwordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nameLabel)
+                            .addComponent(lastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(firstNameLabel)
+                            .addComponent(firstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dateOfBirthLabel)
+                            .addComponent(dateOfBirthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(emailLabel)
+                            .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(passwordLabel)
+                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(confirmPasswordLabel)
+                            .addComponent(passwordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inamiLabel)
+                            .addComponent(inamiTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registerButton)
                 .addContainerGap())
         );
@@ -208,97 +213,110 @@ public class RegisterWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lastNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastNameTextFieldActionPerformed
-
-    private void passwordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordField2ActionPerformed
-        // TODO add your handling code here:
-        if (passwordField.getPassword() != passwordField2.getPassword()) {
-
+    private int checkPassword() {
+        String pw1, pw2;
+        pw1 = String.valueOf(passwordField.getPassword());
+        pw2 = String.valueOf(passwordField2.getPassword());
+        if (pw1.equals(pw2)) {
+            if (pw1.length() > 3) {
+                try {
+                    pw = Integer.parseInt(pw1);
+                } catch (NumberFormatException ex) {
+                    pw = 0;
+                    error += ("Only use numbers in password. ");
+                }
+            } else {
+                pw = 0;
+                error += "Password needs minimum 4 characters.";
+            }
+        } else {
+            pw = 0;
+            error += ("Passwords are different. ");
         }
-    }//GEN-LAST:event_passwordField2ActionPerformed
+        return pw;
+    }
+
+    private boolean dataIsComplete() {
+        if (lastNameTextField.getText().equalsIgnoreCase("")) {
+            databoolean = false;
+            error += ("Fill in all the information. ");
+        } else if (firstNameTextField.getText().equalsIgnoreCase("")) {
+            databoolean = false;
+            error += ("Fill in all the information. ");
+        } else if (dateOfBirthTextField.getText().equalsIgnoreCase("yyyy-mm-dd")) {
+            databoolean = false;
+            error += ("Fill in all the information. ");
+        } else if (emailTextField.getText().equalsIgnoreCase("")) {
+            databoolean = false;
+            error += ("Fill in all the information. ");
+        } else if (inamiTextField.getText().equalsIgnoreCase("") && role == 1) {
+            databoolean = false;
+            error += ("Fill in all the information. ");
+        } else {
+            databoolean = true;
+        }
+        return databoolean;
+    }
+
+    private Date checkDate() {
+        try {
+            date = sdf.parse(String.valueOf(dateOfBirthTextField.getText()));
+        } catch (NullPointerException | IllegalArgumentException | ParseException ex) {
+            date = null;
+            error += "Date format has to be yyyy-mm-dd. ";
+        }
+        return date;
+    }
+
+    private void checkInami() {
+        String i = String.valueOf(inamiTextField.getText());
+        try {
+            inami = Integer.parseInt(i);
+        } catch (NumberFormatException ex) {
+            inami = 0;
+            error += ("Invalid inami format. ");
+        }
+    }
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        // TODO add your handling code here:
-        if (passwordField.getText().equals(passwordField2.getText())) {
-            System.out.println("pw ok");
-            errorText.setText("");
-            if (lastNameTextField.getText() == null || firstNameTextField.getText() == null) { //ajouter le reste
-                errorText.setText("Please fill in all the information.");
+        dataIsComplete();
+        checkPassword();
+        checkDate();
+        errorText.setText(error);
+        error = "";
+        if (databoolean && pw != 0 && date != null) {
+            Person person = new Person(id);
+            person.setLastname(lastNameTextField.getText());
+            person.setFirstname(firstNameTextField.getText());
+            person.setDateofbirth(date);
+            person.setPassword(pw);
+            person.setEmailadress(emailTextField.getText());
+            person.setRole(role);
+            if (role == 1) {
+                //checkInami();
+                //(Doctor) person.setInami(inamiTextField.getText());
             }
-            else {
-                System.out.println("data ok");
-                Person person = new Person();
-                person.setLastname(lastNameTextField.getText());
-                person.setFirstname(firstNameTextField.getText());
-                try {
-                    person.setDateofbirth(fmt.parse(dateOfBirthTextField.getText()));
-                } catch (ParseException ex) {
-                    Logger.getLogger(RegisterWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                person.setPassword(Integer.valueOf(passwordField.getText()));
-                person.setEmailadress(emailTextField.getText());
-                person.setRole(role);
-                if (role == 1){
-                    //(person).setInami(inamiTextField.getText());
-                }
-                personCtrl.create(person);
-            }
+            personCtrl.create(person);
+        }        
     }//GEN-LAST:event_registerButtonActionPerformed
-        else {
-            System.out.println("pw erreur ok");
-            errorText.setText("Passwords don't match. Try Again.");
+ 
+    private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
+        if ((roleComboBox.getSelectedItem().toString()).equalsIgnoreCase("Patient")) {
+            inamiLabel.setVisible(false);
+            inamiLabel.setEnabled(false);
+            inamiTextField.setText("");
+            inamiTextField.setVisible(false);
+            inamiTextField.setEnabled(false);
+            role = 0;
+        } else if ((roleComboBox.getSelectedItem().toString()).equalsIgnoreCase("Doctor")) {
+            inamiLabel.setVisible(true);
+            inamiLabel.setEnabled(true);
+            inamiTextField.setVisible(true);
+            inamiTextField.setEnabled(true);
+            role = 1;
         }
-    }
-    private void errorTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_errorTextActionPerformed
+    }//GEN-LAST:event_roleComboBoxActionPerformed
 
-    private void isDoctorCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isDoctorCheckBoxActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_isDoctorCheckBoxActionPerformed
-
-    private void inamiTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inamiTextFieldActionPerformed
-        role = 1;
-        System.out.println("isDoctor");
-    }//GEN-LAST:event_inamiTextFieldActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegisterWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegisterWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegisterWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegisterWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RegisterWindow().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel confirmPasswordLabel;
@@ -309,15 +327,16 @@ public class RegisterWindow extends javax.swing.JFrame {
     private javax.swing.JTextField errorText;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JTextField firstNameTextField;
+    private javax.swing.JLabel inamiLabel;
     private javax.swing.JTextField inamiTextField;
-    private javax.swing.JCheckBox isDoctorCheckBox;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField lastNameTextField;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JPasswordField passwordField2;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JButton registerButton;
+    private javax.swing.JComboBox<String> roleComboBox;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

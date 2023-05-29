@@ -40,7 +40,7 @@ public class Doctor implements Serializable  {
     private Integer iddoctor;
     @Basic(optional = false)
     @Column(name = "inami")
-    private String inami;
+    private int inami;
     @JoinColumn(name = "idperson", referencedColumnName = "idperson")
     @ManyToOne(optional = false)
     private Person idperson;
@@ -52,7 +52,7 @@ public class Doctor implements Serializable  {
         this.iddoctor = iddoctor;
     }
     
-    public Doctor(Integer iddoctor, String inami) {
+    public Doctor(Integer iddoctor, int inami) {
         this.iddoctor = iddoctor;
         this.inami = inami;
     }
@@ -65,11 +65,11 @@ public class Doctor implements Serializable  {
         this.iddoctor = iddoctor;
     }
 
-    public String getInami() {
+    public int getInami() {
         return inami;
     }
 
-    public void setInami(String inami) {
+    public void setInami(int inami) {
         this.inami = inami;
     }
     
